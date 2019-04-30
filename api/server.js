@@ -37,20 +37,24 @@ app.post("/api", (req,res)=>{
     const dados = req.body;
 
     console.log(dados)
-    res.send(dados)
+    //res.send(dados)
+    
+    
     //testes dos dados do body
     //TODO
-    // db.open(function(err, mongoclient){
-    //     mongoclient.collection("pontos", function(err,collection){
-    //         collection.insert(dados, function(err,records){
-    //             if(err){
-    //                 res.json({msg: "Ocorreu um erro!"})
-    //             }else{
-    //                 res.json({msg: "Ponto batido!"})
-    //             }
-    //             mongoclient.close();
-    //         })
-    //     })
-    // })    
+    
+    
+    db.open(function(err, mongoclient){
+        mongoclient.collection("pontos", function(err,collection){
+            collection.insert(dados, function(err,records){
+                if(err){
+                    res.json({msg: "Ocorreu um erro!"})
+                }else{
+                    res.json({msg: "Ponto batido!"})
+                }
+                mongoclient.close();
+            })
+        })
+    })    
 
 })
