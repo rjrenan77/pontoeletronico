@@ -1,0 +1,52 @@
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <title> CRO-RJ Ponto Eletrônico</title>
+       
+        <link rel="stylesheet" type="text/css" href="./public/css/estilo.css" />
+    </head>
+
+    <body>
+        <!-- posso botar hora aqui -->
+
+        <div > 
+
+            <input type="text" id="teste" name="teste"/>
+            
+        </div>
+        <button id="btn-ponto" type="submit" >BATER PONTO</button> 
+        
+        <div id="mensagem-retorno">
+
+        </div>
+    </body>
+    <script>
+
+        document.getElementById("btn-ponto").addEventListener("click", function(event){
+            event.preventDefault();
+
+            var formData = new FormData();
+
+            var teste = document.getElementById("teste").value;
+
+            formData.append("teste", teste)
+            console.log(teste)
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.onreadystatechange = function(){
+                if(xhr.readyState == 4){
+                    var resposta = xhr.responseText;
+                    
+                    document.getElementById("mensagem-retorno").innerHTML = resposta;
+                }
+            }
+
+            xhr.open("POST", "http://localhost:8080/api");
+            xhr.send(formData);
+        });
+    
+   
+    </script>
+</html>
