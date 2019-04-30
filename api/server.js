@@ -27,17 +27,17 @@ const db = new mongodb.Db(
 
 //rotas
 app.get("/", (req,res)=>{
-    res.send({msg: "Opa!"})
+    res.send({msg: "Opa!"});
 })
 
 
 app.post("/api", (req,res)=>{
 
-    // res.setHeader("Access-Control-Allow-Origin",'*')
+    res.setHeader("Access-Control-Allow-Origin",'*')
     const dados = req.body;
 
-    console.log(dados)
-    //res.send(dados)
+    console.log(dados);
+    res.send(dados);
     
     
     //testes dos dados do body
