@@ -3,50 +3,130 @@
     <head>
         <meta charset="UTF-8">
         <title> CRO-RJ Ponto Eletrônico</title>
-       
+        
         <link rel="stylesheet" type="text/css" href="./public/css/estilo.css" />
     </head>
+    
+    <body onload="hora();data()">
 
-    <body>
+        <div id="dataPonto" >
+
+        </div>
         <!-- posso botar hora aqui -->
+        <div id="horaPonto">
 
-        <div > 
+        </div>
 
-            <input type="text" id="teste" name="teste"/>
+        <div id="tipoPonto">
             
-        </div>
-        <button id="btn-ponto" type="submit" >BATER PONTO</button> 
-        
-        <div id="mensagem-retorno">
+            <select id="selectPonto">
+                    <option value="1000" >Chegada ao local de Trabalho</option>
+                    <option value="2000" >Ir Almoçar</option>
+                    <option value="3" >Volta do Almoço</option>
+                    <option value="4" >Saída do Local de Trabalho</option>
+            </select>
 
         </div>
+
+        <div>
+
+            <button id="btn-ponto" type="submit" >BATER PONTO</button> 
+
+        </div>
+        
+
     </body>
+
     <script>
 
+        
         document.getElementById("btn-ponto").addEventListener("click", function(event){
             event.preventDefault();
 
             var formData = new FormData();
 
-            var teste = document.getElementById("teste").value;
+            var idUsuario = 1337;
+            var tipoPonto = document.getElementById("selectPonto").value;
+            var dataPonto =  data();
+            var horaPonto = hora();
 
-            formData.append("teste", teste)
-            console.log(teste)
 
+            formData.append("idUsuario", idUsuario);
+            formData.append("dataPonto", dataPonto);
+            formData.append("ponto", tipoPonto + " " + horaPonto);
+         
             var xhr = new XMLHttpRequest();
 
             xhr.onreadystatechange = function(){
+
                 if(xhr.readyState == 4){
                     var resposta = xhr.responseText;
+                    console.log(resposta)
                     
-                    document.getElementById("mensagem-retorno").innerHTML = resposta;
+                    
+                    // teste.innerHTML = "OKOK"
+
+                    //document.write(Date());
+                   
+                    
+                    
                 }
             }
 
             xhr.open("POST", "http://localhost:8080/api");
             xhr.send(formData);
         });
-    
-   
+
+
     </script>
+
+
+    <script>
+
+        //montando data
+        function data(){
+            var data = new Date();
+
+            var dia = data.getDate();
+            var mes = data.getMonth() + 1;
+            var ano = data.getFullYear();
+
+            dataFormatada = dia + "/" + mes + "/" + ano;
+            
+            document.getElementById("dataPonto").innerHTML = dataFormatada;
+
+            return dataFormatada;
+        }
+    
+        // montando hora
+        function hora(){
+            var hora = new Date();
+            var h = hora.getHours();
+            var m = hora.getMinutes();
+            var s = hora.getSeconds();
+
+            h = acrescentaZero(h);
+            m = acrescentaZero(m);
+            s = acrescentaZero(s);
+
+            var hora = h + ":" + m + ":" + s;
+
+            document.getElementById("horaPonto").innerHTML = hora;
+
+            setTimeout("hora()", 500);
+
+            return hora;
+        }
+
+        function acrescentaZero(i){
+
+            if(i<10){
+                i = "0" + i ;
+            }
+
+            return i;
+        }
+    
+    </script>
+
 </html>
