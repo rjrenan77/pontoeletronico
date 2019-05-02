@@ -45,15 +45,22 @@
 
             var formData = new FormData();
 
-            var idUsuario = 1337;
+            var idUsuario = 1338;
             var tipoPonto = document.getElementById("selectPonto").value;
             var dataPonto =  data();
             var horaPonto = hora();
+            
+            var pontoFormatado = [tipoPonto + " " + horaPonto];
+
+            console.log(typeof pontoFormatado)
+
+            //var arrayPontosDoDia = JSON.parse("["+pontoFormatado+"]").split();
+
 
 
             formData.append("idUsuario", idUsuario);
             formData.append("dataPonto", dataPonto);
-            formData.append("ponto", tipoPonto + " " + horaPonto);
+            formData.append("ponto", pontoFormatado);
          
             var xhr = new XMLHttpRequest();
 
