@@ -26,8 +26,40 @@ const db = new mongodb.Db(
 )
 
 //rotas
-app.get("/", (req, res) => {
-    res.send({ msg: "Opa!" });
+app.post("/api/verificaSeTemPontoRegistrado", (req, res) => {
+    
+    const dados = req.body;
+
+    console.log(dados.idUsuario1)
+
+    db.open(function(err, mongoclient){
+        mongoclient.collection("pontos", function(err, collection){
+            collection.find({"idUsuario": {$eq:dados.idUsuario1},"ponto":{$exists:true},"dataPonto": { $eq: dados.dataHoje1}}).toArray(function (err, results){
+
+                if(err){
+                    res.json(err);
+                }else{
+                    
+                    if(results.length > 0){
+                        //já tem ponto hoje
+                        res.status(200).send("1");
+                        //console.log(results)
+                        mongoclient.close();
+
+                    }
+                    else{
+                        //ainda nao tem ponto
+                        res.status(200).send("0");
+                        mongoclient.close();
+                    }    
+                }
+            })
+
+            
+        })
+    })
+    
+    // res.send({ msg: "Opa!" });
 })
 
 
@@ -61,7 +93,7 @@ app.post("/api", function (req, res) {
                             res.json({ msg: "Ocorreu um erro!" })
                             console.log(err)
                         } else {
-                            res.status(200).send("atualizar");
+                            res.status(200).send("atualizado");
                             //res.json({ msg: "Ponto registrado com sucesso!" })
                         }
                         mongoclient.close();
@@ -75,7 +107,7 @@ app.post("/api", function (req, res) {
                         if (err) {
                             res.json({ msg: "Ocorreu um erro!" })
                         } else {
-                            res.status(200).send("adicionar");
+                            res.status(200).send("adicionado");
                             //res.json({ msg: "Ponto registrado com sucesso!" })
                         }
                         mongoclient.close();
@@ -93,27 +125,3 @@ app.post("/api", function (req, res) {
 
 
 })
-
-function retornaDataAtualSeExistirNoBanco(dados){
-
-    db.open(function (err, mongoclient) {
-        mongoclient.collection("pontos", function (err, collection) {
-            //importante saber que o primeiro parametro se refere à chave do banco de dados e o segundo parametro com o objeto pesquisado
-            collection.find({ "dataPonto": { $eq: dados.dataPonto } }).toArray(function (err, results) {
-                
-                var dataJaExiste = 0;
-                console.log(results)
-                if(results.length>0){// const data =  "data é igual a de hoje"
-                    console.log("data é igual a de hoje")
-                    mongoclient.close();
-                    return dataJaExiste = 1; 
-                }
-                else
-                    console.log("data nao é igual a de hoje")
-                    mongoclient.close();
-                    return dataJaExiste;
-            })
-        })
-    })
-
-}
