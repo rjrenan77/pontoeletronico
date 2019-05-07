@@ -22,8 +22,8 @@
             <select id="selectPonto">
                     <option value="1000" >Chegada ao local de Trabalho</option>
                     <option value="2000" >Ir Almoçar</option>
-                    <option value="3" >Volta do Almoço</option>
-                    <option value="4" >Saída do Local de Trabalho</option>
+                    <option value="3000" >Volta do Almoço</option>
+                    <option value="4000" >Saída do Local de Trabalho</option>
             </select>
 
         </div>
@@ -50,17 +50,16 @@
             var dataPonto =  data();
             var horaPonto = hora();
             
-            var pontoFormatado = [tipoPonto + " " + horaPonto];
-
-            console.log(typeof pontoFormatado)
-
+            var ponto = tipoPonto + " " + horaPonto;
+           
+            
             //var arrayPontosDoDia = JSON.parse("["+pontoFormatado+"]").split();
 
 
 
             formData.append("idUsuario", idUsuario);
             formData.append("dataPonto", dataPonto);
-            formData.append("ponto", pontoFormatado);
+            formData.append("ponto", ponto);
          
             var xhr = new XMLHttpRequest();
 
@@ -68,8 +67,17 @@
 
                 if(xhr.readyState == 4){
                     var resposta = xhr.responseText;
-                    console.log(resposta)
+                   // console.log(resposta)
                     
+                    //talvez sirva para recarregar a pagina
+                    xhr.onload = function(){
+                        if( resposta === "adicionar"){
+                            console.log("cheguei do adicionar")
+                        }
+                        if (resposta === "atualizar"){
+                            console.log("cheguei do atualizar")
+                        }
+                    }
                     
                     // teste.innerHTML = "OKOK"
 

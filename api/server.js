@@ -36,56 +36,65 @@ app.post("/api", function (req, res) {
     res.setHeader("Access-Control-Allow-Origin", '*')
     const dados = req.body;
 
+    console.log(dados.dataPonto)
+    retornaDataSeExistirNoBanco(dados);
     // res.send(dados);
     
     //testes dos dados do body
     //TODO
 
-    db.open(function (err, mongoclient) {
-        mongoclient.collection("pontos", function (err, collection) {
-            //importante saber que o primeiro parametro se refere à chave do banco de dados e o segundo parametro com o objeto pesquisado
-            collection.find({ "idUsuario": { $eq: dados.idUsuario } }).toArray(function (err, results) {
-                if (results.length > 0) {
-                    //atualizo o documento
+    // db.open(function (err, mongoclient) {
+    //     mongoclient.collection("pontos", function (err, collection) {
+    //         //importante saber que o primeiro parametro se refere à chave do banco de dados e o segundo parametro com o objeto pesquisado
+    //         collection.find({ "idUsuario": { $eq: dados.idUsuario } }).toArray(function (err, results) {
+    //             if (results.length > 0) {
+
+    //                 //retornaDataSeExistirNoBanco();
+    //                 //atualizo o documento
                     
-                    collection.update(
-                        {idUsuario:dados.idUsuario},
-                        { $push: {'ponto': "0001"}},
-                        {},
+    //                 collection.update(
+    //                     {idUsuario:dados.idUsuario},
+    //                     { $push: {"pontoRestoDoDia":dados.ponto}
+    //                     } ,
+    //                     {},
 
-                    function (err, records) {
-                        if (err) {
-                            res.json({ msg: "Ocorreu um erro!" })
-                            console.log(err)
-                        } else {
-                            res.json({ msg: "Ponto registrado com sucesso!" })
-                        }
-                        mongoclient.close();
-                    })
+    //                 function (err, records) {
+    //                     if (err) {
+    //                         res.json({ msg: "Ocorreu um erro!" })
+    //                         console.log(err)
+    //                     } else {
+    //                         res.status(200).send("atualizar");
+    //                         //res.json({ msg: "Ponto registrado com sucesso!" })
+    //                     }
+    //                     mongoclient.close();
+    //                 })
 
-                    console.log("tem que atualizar!")
-                    mongoclient.close();
-                } else {
-                    //crio um novo documento
-                    collection.insert(dados, function (err, records) {
-                        if (err) {
-                            res.json({ msg: "Ocorreu um erro!" })
-                        } else {
-                            res.json({ msg: "Ponto registrado com sucesso!" })
-                        }
-                        mongoclient.close();
-                    })
+    //                 console.log("tem que atualizar!")
+    //                 mongoclient.close();
+    //             } else {
+    //                 //crio um novo documento
+    //                 collection.insert(dados, function (err, records) {
+    //                     if (err) {
+    //                         res.json({ msg: "Ocorreu um erro!" })
+    //                     } else {
+    //                         res.status(200).send("adicionar");
+    //                         //res.json({ msg: "Ponto registrado com sucesso!" })
+    //                     }
+    //                     mongoclient.close();
+    //                 })
+
+    //                 mongoclient.close();
 
 
-                    mongoclient.close();
+    //                 console.log("adicionou")
+    //             }
 
-                    console.log("adicionou")
-                }
+    //         })
+    //     })
+    // })
 
-            })
-        })
-    })
 
+    
 
     // db.open(function(err, mongoclient){
     //     mongoclient.collection("pontos", function(err,collection){
@@ -101,3 +110,21 @@ app.post("/api", function (req, res) {
     // })    
 
 })
+
+function retornaDataSeExistirNoBanco(dados){
+
+    db.open(function (err, mongoclient) {
+        mongoclient.collection("pontos", function (err, collection) {
+            //importante saber que o primeiro parametro se refere à chave do banco de dados e o segundo parametro com o objeto pesquisado
+            collection.find({ "dataPonto": { $eq: dados.dataPonto } }).toArray(function (err, results) {
+               
+                console.log(results)
+                if(results.length>0)// const data =  "data é igual a de hoje"
+                    console.log("data é igual a de hoje")
+                else
+                    console.log("data nao é igual a de hoje")
+            })
+        })
+    })
+
+}
