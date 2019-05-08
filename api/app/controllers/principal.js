@@ -1,23 +1,5 @@
-const express = require("express");
-const bodyParser = require("body-parser");
 const mongodb = require("mongodb");
 
-const multiparty = require("connect-multiparty");
-
-const app = express();
-
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(multiparty());
-
-
-
-const port = 8080;
-app.listen(port);
-
-console.log("Servidor online");
-
-//objeto de conexao com o mongo db
 const db = new mongodb.Db(
     "crorjponto",
     new mongodb.Server('localhost', 27017, {}),
@@ -25,9 +7,7 @@ const db = new mongodb.Db(
 
 )
 
-//rotas
-app.post("/api/verificaSeTemPontoRegistrado", (req, res) => {
-    
+module.exports.verificaPonto = function(application,req,res){
     const dados = req.body;
 
     //console.log(dados.idUsuario1)
@@ -81,13 +61,9 @@ app.post("/api/verificaSeTemPontoRegistrado", (req, res) => {
             
         })
     })
-    
-    // res.send({ msg: "Opa!" });
-})
+}
 
-
-app.post("/api", function (req, res) {
-    
+module.exports.inserePonto = function(application,req,res){
     res.setHeader("Access-Control-Allow-Origin", '*')
     const dados = req.body;
     
@@ -145,6 +121,4 @@ app.post("/api", function (req, res) {
             })
         })
     })
-
-
-})
+}
