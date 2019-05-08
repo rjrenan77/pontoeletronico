@@ -14,6 +14,7 @@ app.use(multiparty());
 
 consign()
     .include("app/routes")
+    .then("config/dbConnection.js")
     .then("app/controllers")
     .into(app);
     

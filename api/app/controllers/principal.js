@@ -1,18 +1,12 @@
-const mongodb = require("mongodb");
-
-const db = new mongodb.Db(
-    "crorjponto",
-    new mongodb.Server('localhost', 27017, {}),
-    {}
-
-)
-
 module.exports.verificaPonto = function(application,req,res){
+
+    let connection = application.config.dbConnection;
+
     const dados = req.body;
 
     //console.log(dados.idUsuario1)
 
-    db.open(function(err, mongoclient){
+    connection().open(function(err, mongoclient){
         mongoclient.collection("pontos", function(err, collection){
             collection.find({"idUsuario": {$eq:dados.idUsuario1},"ponto":{$exists:true},"dataPonto": { $eq: dados.dataHoje1}}).toArray(function (err, results){
 
@@ -64,6 +58,9 @@ module.exports.verificaPonto = function(application,req,res){
 }
 
 module.exports.inserePonto = function(application,req,res){
+
+    let connection = application.config.dbConnection;
+
     res.setHeader("Access-Control-Allow-Origin", '*')
     const dados = req.body;
     
@@ -73,7 +70,7 @@ module.exports.inserePonto = function(application,req,res){
     //testes dos dados do body
     //TODO
 
-    db.open(function (err, mongoclient) {
+    connection().open(function (err, mongoclient) {
         mongoclient.collection("pontos", function (err, collection) {
             //importante saber que o primeiro parametro se refere à chave do banco de dados e o segundo parametro com o objeto pesquisado
             collection.find({ "idUsuario": { $eq: dados.idUsuario },  "dataPonto": { $eq: dados.dataPonto } } ).toArray(function (err, results) {
