@@ -1,197 +1,237 @@
 <html>
 
-    <head>
-        <meta charset="UTF-8">
-        <title> CRO-RJ Ponto Eletrônico</title>
-        
-        <link rel="stylesheet" type="text/css" href="./public/css/estilo.css" />
-    </head>
-    
-    <body onload="hora();data();verificaPonto()">
+<head>
+    <meta charset="UTF-8">
+    <title> CRO-RJ Ponto Eletrônico</title>
 
-        <div id="dataPonto" >
+    <link rel="stylesheet" type="text/css" href="./public/css/estilo.css" />
+</head>
 
-        </div>
-        <!-- posso botar hora aqui -->
-        <div id="horaPonto">
+<body onload="hora();data();verificaPonto()">
 
-        </div>
+    <div id="dataPonto">
 
-        <div id="tipoPonto">
-            
-            <select id="selectPonto" required>
-                
-                    <option value="1000" >Chegada ao local de Trabalho</option>
-                    <option value="2000" >Ir Almoçar</option>
-                    <option value="3000" >Volta do Almoço</option>
-                    <option value="4000" >Saída do Local de Trabalho</option>
-            </select>
+    </div>
+    <!-- posso botar hora aqui -->
+    <div id="horaPonto">
 
-        </div>
+    </div>
 
-        <div>
+    <div id="tipoPonto">
 
-            <button id="btn-ponto" type="submit" >BATER PONTO</button> 
+        <select id="selectPonto" required>
 
-        </div>
-        
+            <option value="1000">Chegada ao local de Trabalho</option>
+            <option value="2000">Ir Almoçar</option>
+            <option value="3000">Volta do Almoço</option>
+            <option value="4000">Saída do Local de Trabalho</option>
+        </select>
 
-    </body>
+    </div>
 
-    <script>
-        
-        
-        function verificaPonto(idUsuario1 = 1338,dataHoje1 = data()){
-    
-            //se usuario já tem tipo de  ponto naquela data, desativa botao respectivo
-                var formData1 = new FormData();
-    
-                formData1.append("idUsuario1", idUsuario1);
-                formData1.append("dataHoje1", dataHoje1);
-    
-                var xhr1 = new XMLHttpRequest();
-    
-                 xhr1.onreadystatechange = function(){
-    
-                    if(xhr1.readyState == 4){
-                        var resposta1 = xhr1.responseText;
-                        console.log(resposta1)
+    <div>
+
+        <button id="btn-ponto" type="submit">BATER PONTO</button>
+
+    </div>
+
+
+</body>
+
+<script>
+
+
+    function verificaPonto(idUsuario1 = 1338, dataHoje1 = data()) {
+
+        //se usuario já tem tipo de  ponto naquela data, desativa botao respectivo
+        var formData1 = new FormData();
+
+        formData1.append("idUsuario1", idUsuario1);
+        formData1.append("dataHoje1", dataHoje1);
+
+        var xhr1 = new XMLHttpRequest();
+
+        xhr1.onreadystatechange = function () {
+
+            if (xhr1.readyState == 4) {
+                var resposta1 = xhr1.responseText;
+                //console.log(resposta1)
+
+                //talvez sirva para recarregar a pagina
+                xhr1.onload = function () {
+                    if (resposta1 === "1000") {
+                        let selectPonto = document.getElementById("selectPonto");
+
+                        let opcoes = selectPonto.getElementsByTagName("option");
+                        opcoes[0].setAttribute("disabled", true);
+                        opcoes[1].setAttribute("selected", true);
+
                         
-                        //talvez sirva para recarregar a pagina
-                        xhr1.onload = function(){
-                            if( resposta1 === "1"){
-                                let selectPonto = document.getElementById("selectPonto");
+                    }
+                    if (resposta1 === "10002000") {
+                        let selectPonto = document.getElementById("selectPonto");
 
-                                let opcoes = selectPonto.getElementsByTagName("option");
-                                opcoes[0].setAttribute("disabled", true);
-                                opcoes[1].setAttribute("selected", true);
+                        let opcoes = selectPonto.getElementsByTagName("option");
+                        opcoes[0].setAttribute("disabled", true);
+                        opcoes[1].setAttribute("disabled", true);
+                        opcoes[2].setAttribute("selected", true);
 
-                                console.log("muda combo box 1000")
-                            }
-                            if (resposta1 === "0"){
-                                console.log("muda cacete nenhum nao")
-                            }
-                        }
                         
-                       
-                        //document.write(Date());
-                       
+                        
+                    }
+
+                    if (resposta1 === "100020003000") {
+                        let selectPonto = document.getElementById("selectPonto");
+
+                        let opcoes = selectPonto.getElementsByTagName("option");
+                        opcoes[0].setAttribute("disabled", true);
+                        opcoes[1].setAttribute("disabled", true);
+                        opcoes[2].setAttribute("disabled", true);
+                        opcoes[3].setAttribute("selected", true);
+
+                        
+                        
+                    }
+
+                    if (resposta1 === "1000200030004000") {
+                        let selectPonto = document.getElementById("selectPonto");
+
+                        let opcoes = selectPonto.getElementsByTagName("option");
+                        opcoes[0].setAttribute("disabled", true);
+                        opcoes[1].setAttribute("disabled", true);
+                        opcoes[2].setAttribute("disabled", true);
+                        opcoes[3].setAttribute("disabled", true);
+                        
+
+                        let botao = document.getElementById("btn-ponto");
+                        botao.disabled = true;
+                        botao.innerHTML = "já bateu todos os pontos, seu trouxa!";
                         
                     }
                 }
-    
-    
-    
-                xhr1.open("POST", "http://localhost:8080/api/verificaSeTemPontoRegistrado")
-                xhr1.send(formData1);
-    
+
+
+                //document.write(Date());
+
+
             }
-        
-    </script>
-
-    <script>
-
-        
-        document.getElementById("btn-ponto").addEventListener("click", function(event){
-            event.preventDefault();
-
-            var formData = new FormData();
-
-            var idUsuario = 1338;
-            var tipoPonto = document.getElementById("selectPonto").value;
-            var dataPonto =  data();
-            var horaPonto = hora();
-            
-            var ponto = tipoPonto + " " + horaPonto;
-           
-            
-            //var arrayPontosDoDia = JSON.parse("["+pontoFormatado+"]").split();
+        }
 
 
 
-            formData.append("idUsuario", idUsuario);
-            formData.append("dataPonto", dataPonto);
-            formData.append("ponto", ponto);
-         
-            var xhr = new XMLHttpRequest();
+        xhr1.open("POST", "http://localhost:8080/api/verificaSeTemPontoRegistrado")
+        xhr1.send(formData1);
 
-            xhr.onreadystatechange = function(){
+    }
 
-                if(xhr.readyState == 4){
-                    var resposta = xhr.responseText;
-                   // console.log(resposta)
-                    
-                    //talvez sirva para recarregar a pagina
-                    xhr.onload = function(){
-                        if( resposta === "adicionar"){
-                            console.log("cheguei do adicionar")
-                        }
-                        if (resposta === "atualizar"){
-                            console.log("cheguei do atualizar")
-                        }
+</script>
+
+<script>
+
+
+    document.getElementById("btn-ponto").addEventListener("click", function (event) {
+        event.preventDefault();
+
+        var formData = new FormData();
+
+        var idUsuario = 1338;
+        var tipoPonto = document.getElementById("selectPonto").value;
+        var dataPonto = data();
+        var horaPonto = hora();
+
+        var ponto = tipoPonto + " " + horaPonto;
+
+
+        //var arrayPontosDoDia = JSON.parse("["+pontoFormatado+"]").split();
+
+
+
+        formData.append("idUsuario", idUsuario);
+        formData.append("dataPonto", dataPonto);
+        formData.append("ponto", ponto);
+
+        var xhr = new XMLHttpRequest();
+
+        xhr.onreadystatechange = function () {
+
+            if (xhr.readyState == 4) {
+                var resposta = xhr.responseText;
+                // console.log(resposta)
+
+                //talvez sirva para recarregar a pagina
+                xhr.onload = function () {
+                    if (resposta === "adicionar") {
+                        console.log("cheguei do adicionar")
                     }
-                    
-                   
-                    //document.write(Date());
-                   
-                    
+                    if (resposta === "atualizar") {
+                        console.log("cheguei do atualizar")
+                    }
                 }
+
+
+                //document.write(Date());
+
+
             }
-
-            xhr.open("POST", "http://localhost:8080/api");
-            xhr.send(formData);
-        });
-
-
-    </script>
-
-
-    <script>
-
-        //montando data
-        function data(){
-            var data = new Date();
-
-            var dia = data.getDate();
-            var mes = data.getMonth() + 1;
-            var ano = data.getFullYear();
-
-            dataFormatada = dia + "/" + mes + "/" + ano;
-            
-            document.getElementById("dataPonto").innerHTML = dataFormatada;
-
-            return dataFormatada;
-        }
-    
-        // montando hora
-        function hora(){
-            var hora = new Date();
-            var h = hora.getHours();
-            var m = hora.getMinutes();
-            var s = hora.getSeconds();
-
-            h = acrescentaZero(h);
-            m = acrescentaZero(m);
-            s = acrescentaZero(s);
-
-            var hora = h + ":" + m + ":" + s;
-
-            document.getElementById("horaPonto").innerHTML = hora;
-
-            setTimeout("hora()", 500);
-
-            return hora;
         }
 
-        function acrescentaZero(i){
+        xhr.open("POST", "http://localhost:8080/api");
+        xhr.send(formData);
 
-            if(i<10){
-                i = "0" + i ;
-            }
+        
+        
+    });
 
-            return i;
+
+</script>
+
+
+<script>
+
+    //montando data
+    function data() {
+        var data = new Date();
+
+        var dia = data.getDate();
+        var mes = data.getMonth() + 1;
+        var ano = data.getFullYear();
+
+        dataFormatada = dia + "/" + mes + "/" + ano;
+
+        document.getElementById("dataPonto").innerHTML = dataFormatada;
+
+        return dataFormatada;
+    }
+
+    // montando hora
+    function hora() {
+        var hora = new Date();
+        var h = hora.getHours();
+        var m = hora.getMinutes();
+        var s = hora.getSeconds();
+
+        h = acrescentaZero(h);
+        m = acrescentaZero(m);
+        s = acrescentaZero(s);
+
+        var hora = h + ":" + m + ":" + s;
+
+        document.getElementById("horaPonto").innerHTML = hora;
+
+        setTimeout("hora()", 500);
+
+        return hora;
+    }
+
+    function acrescentaZero(i) {
+
+        if (i < 10) {
+            i = "0" + i;
         }
-    
-    </script>
+
+        return i;
+    }
+
+</script>
 
 </html>

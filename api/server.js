@@ -30,7 +30,7 @@ app.post("/api/verificaSeTemPontoRegistrado", (req, res) => {
     
     const dados = req.body;
 
-    console.log(dados.idUsuario1)
+    //console.log(dados.idUsuario1)
 
     db.open(function(err, mongoclient){
         mongoclient.collection("pontos", function(err, collection){
@@ -41,14 +41,37 @@ app.post("/api/verificaSeTemPontoRegistrado", (req, res) => {
                 }else{
                     
                     if(results.length > 0){
-                        //já tem ponto hoje
-                        res.status(200).send("1");
-                        //console.log(results)
+                        //transforma o resultado em string e verifica se tem algum dado de ponto
+                        var resultadoFind = JSON.stringify(results)
+                        
+                        if(resultadoFind.match("4000")){
+                            console.log("tem ponto de chegada e almoco, volta e saida já registrado hoje")
+                            
+                            res.status(200).send("1000200030004000");
+                        }
+
+                        else if(resultadoFind.match("3000")){
+                            console.log("tem ponto de chegada e almoco, volta já registrado hoje")
+                            res.status(200).send("100020003000");
+                        }
+                       
+                        else if(resultadoFind.match("2000")){
+                            console.log("tem ponto de chegada e almoco já registrado hoje")
+
+                            res.status(200).send("10002000");
+                        }
+                        
+                        else if(resultadoFind.match("1000")){
+                            console.log("tem ponto de chegada já registrado hoje")
+                            res.status(200).send("1000");
+                        } 
+                        
                         mongoclient.close();
 
                     }
                     else{
                         //ainda nao tem ponto
+                        console.log("não tem ponto registrado hj")
                         res.status(200).send("0");
                         mongoclient.close();
                     }    
@@ -85,7 +108,7 @@ app.post("/api", function (req, res) {
                     collection.update(
                         {idUsuario:dados.idUsuario,dataPonto:dados.dataPonto},
                         { $push: {"pontoRestoDoDia":dados.ponto}
-                        } ,
+                        },
                         {},
 
                     function (err, records) {
