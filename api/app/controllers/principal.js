@@ -119,3 +119,21 @@ module.exports.inserePonto = function(application,req,res){
         })
     })
 }
+
+module.exports.autenticar = function(application,req,res){
+    var dadosForm = req.body;
+
+    console.log(dadosForm)
+
+    req.assert("usuario").notEmpty();
+    req.assert("pass").notEmpty();
+
+    var erros = req.validationErrors();
+
+    if(erros){
+        //ver como vai tratar erros
+        res.status(401).send("401")
+        // return
+    }else
+      res.status(200).send("tudo ok para criar a sessao")
+}
