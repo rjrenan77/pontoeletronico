@@ -25,5 +25,9 @@ application.post("/api/autenticar", function(req,res){
     application.app.controllers.principal.autenticar(application,req,res);
 })
 
+application.get("/api/sair", function(req,res){
+    application.app.controllers.principal.sair(application,req,res);
+})
+
 
 }

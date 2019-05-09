@@ -59,6 +59,9 @@ module.exports.verificaPonto = function(application,req,res){
 
 module.exports.inserePonto = function(application,req,res){
 
+    var teste = req.session.usuario;
+    console.log(teste)
+
     let connection = application.config.dbConnection;
 
     res.setHeader("Access-Control-Allow-Origin", '*')
@@ -144,4 +147,12 @@ module.exports.autenticar = function(application,req,res){
 
 
     //res.status(200).send("tudo ok para criar a sessao")
+}
+
+module.exports.sair = function(application,req,res){
+    req.session.destroy(function(err){
+        
+        res.status(200).send("destruida");
+
+    })
 }
