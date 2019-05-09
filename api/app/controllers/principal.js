@@ -123,17 +123,25 @@ module.exports.inserePonto = function(application,req,res){
 module.exports.autenticar = function(application,req,res){
     var dadosForm = req.body;
 
-    console.log(dadosForm)
+    //console.log(dadosForm)
 
     req.assert("usuario").notEmpty();
-    req.assert("pass").notEmpty();
+    req.assert("senha").notEmpty();
 
     var erros = req.validationErrors();
 
     if(erros){
         //ver como vai tratar erros
         res.status(401).send("401")
-        // return
-    }else
-      res.status(200).send("tudo ok para criar a sessao")
+        return
+    }
+    
+    let connection = application.config.dbConnection;
+    var UsuarioDAO = new application.app.models.UsuarioDAO(connection);
+
+    UsuarioDAO.autenticar(dadosForm, req,res);
+
+
+
+    //res.status(200).send("tudo ok para criar a sessao")
 }

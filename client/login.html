@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
+    <title> CRO-RJ Sistema de Ponto Eletrônico</title>
     <link rel="stylesheet" href="">
 </head>
 
@@ -19,7 +19,7 @@
                 <input type="text" id="usuario" name="usuario" placeholder="Digite seu usuário..." />
 
                 <p>Senha</p>
-                <input type="password" id="pass" name="pass" placeholder="Digite sua senha ....">
+                <input type="password" id="senha" name="senha" placeholder="Digite sua senha ....">
                 <p></p>
 
                 <button type="submit" id="botaoLogin" name="botaoLogin">Entrar</button>
@@ -40,11 +40,11 @@
             var formData = new FormData();
 
             var usuario = document.getElementById("usuario").value;
-            var pass = document.getElementById("pass").value;
+            var senha = document.getElementById("senha").value;
             
 
             formData.append("usuario", usuario);
-            formData.append("pass", pass);
+            formData.append("senha", senha);
 
             var xhr = new XMLHttpRequest();
 
@@ -59,6 +59,20 @@
                         if (resposta === "401") {
                             var msgValidacao = document.getElementById("msgValidacao");
                             msgValidacao.innerHTML = "ATENÇÃO: Usuário ou Senha Inválidos!"
+    
+                            
+                        }
+
+                        if(resposta === "autorizado"){
+                            console.log("entraaaaa")
+                            location.replace("./index.html");
+                            // window.open("index.html","_blank");
+                            
+                        }
+
+                        if (resposta === "naoautorizado") {
+                            var msgValidacao = document.getElementById("msgValidacao");
+                            msgValidacao.innerHTML = "ATENÇÃO: Usuário ou Senha não autorizados. Procure o administrador do sistema."
     
                             
                         }
