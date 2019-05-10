@@ -37,8 +37,25 @@
 
     </div>
 
+    <div>
+            <br><br><br><br>
+        <button id="btn-comprovante" type="submit"> Imprimir Comprovante </button>
+
+    </div>
+
 
 </body>
+
+<script>
+
+    document.getElementById("btn-comprovante").addEventListener("click", function(event){
+        event.preventDefault();
+
+        window.location.href = "http://localhost:8080/api/imprimeComprovante";
+
+    })
+
+</script>
 
 
 
@@ -50,7 +67,7 @@
 
         var formData = new FormData();
 
-        var idUsuario = 1338;
+        var idUsuario = "";
         var tipoPonto = document.getElementById("selectPonto").value;
         var dataPonto = data();
         var horaPonto = hora();
@@ -119,7 +136,7 @@
 <script>
     //ao inves de enviar o usuario, pega ele já no back end atraves da variavel de sessao e verifica o ponto, verificar o obejctId
 
-    function verificaPonto(idUsuario1 = 1338, dataHoje1 = data()) {
+    function verificaPonto(idUsuario1, dataHoje1 = data()) {
 
         //se usuario já tem tipo de  ponto naquela data, desativa botao respectivo
         var formData1 = new FormData();

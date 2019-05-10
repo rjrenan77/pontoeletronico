@@ -30,4 +30,9 @@ application.get("/api/sair", function(req,res){
 })
 
 
+application.get("/api/imprimeComprovante", function(req,res){
+    application.app.controllers.principal.imprimeComprovante(application,req,res);
+})
+
+
 }
