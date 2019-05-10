@@ -1,9 +1,14 @@
+var ObjectID = require("mongodb").ObjectID;
+
 module.exports.verificaPonto = function(application,req,res){
 
     let connection = application.config.dbConnection;
 
-    const dados = req.body;
+    // console.log("===>"+ObjectID(req.session._id));
 
+    var dados = req.body;
+    dados.idUsuario1 = req.session._id;
+   
     //console.log(dados.idUsuario1)
 
     connection().open(function(err, mongoclient){
@@ -59,15 +64,19 @@ module.exports.verificaPonto = function(application,req,res){
 
 module.exports.inserePonto = function(application,req,res){
 
-    var teste = req.session.usuario;
-    console.log(teste)
+    let usuario = req.session.usuario;
+    var _id = req.session._id;
+
+    console.log(_id)
 
     let connection = application.config.dbConnection;
 
     res.setHeader("Access-Control-Allow-Origin", '*')
-    const dados = req.body;
+    var dados = req.body;
+    dados.idUsuario = _id.toString();
+    // console.log(dados.idUsuario)
     
-    console.log(dados.dataPonto)
+    //console.log(dados.dataPonto)
     // res.send(dados);
     
     //testes dos dados do body
@@ -82,7 +91,7 @@ module.exports.inserePonto = function(application,req,res){
                     //atualizo o documento
                     
                     collection.update(
-                        {idUsuario:dados.idUsuario,dataPonto:dados.dataPonto},
+                        {idUsuario:_id,dataPonto:dados.dataPonto},
                         { $push: {"pontoRestoDoDia":dados.ponto}
                         },
                         {},
