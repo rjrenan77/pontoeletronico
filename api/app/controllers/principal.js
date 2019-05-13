@@ -1,43 +1,99 @@
 const PDFDocument = require('pdfkit');
-
-// var fs = require('fs');
-
-
-
+const ObjectID = require("mongodb").ObjectID;
 
 module.exports.imprimeComprovante = function (application, req, res) {
-    doc = new PDFDocument();
+
+    let connection = application.config.dbConnection;
+
+    connection().open(function (err, mongoclient) {
+        mongoclient.collection("pontos", function (err, collection) {
+            collection.find({ "idUsuario": { $eq: req.session._id }, "dataPonto": { $eq: req.session.dataHoje } }).toArray(function (err, results) {
+                if (err) {
+                    res.status(400).send("nao")
+                    console.log("deuRuim")
+                    mongoclient.close()
+                } else {
+                    if (results.length > 0) {
+                        //console.log(results[0].pontoRestoDoDia[0]);
+
+                        var idaAlmoço = ""
+                        var voltaAlmoço = ""
+                        var saida = ""
+
+
+                        // verifico a existencia de pontos do resto do dia
+                        if(results[0].pontoRestoDoDia != undefined){
+                            if (results[0].pontoRestoDoDia[0] != undefined) {
+                                idaAlmoço = results[0].pontoRestoDoDia[0].replace("2000", " Ida ao almoço:")
+                            } if (results[0].pontoRestoDoDia[1] != undefined) {
+                                voltaAlmoço = results[0].pontoRestoDoDia[1].replace("3000", " Volta do almoço:")
+                            } if (results[0].pontoRestoDoDia[2] != undefined) {
+                                saida = results[0].pontoRestoDoDia[2].replace("4000", " Fim do expediente:")
+                            }
+                        }
+
+                        //busco dados de usuario em outro documento
+                        connection().open(function (err, mongoclient2) {
+                            mongoclient2.collection("usuarios", function (err, collection) {
+                                collection.find({ "_id": { $eq: ObjectID(req.session._id) } }).toArray(function (err, resultados) {
+
+
+                                    if (err) {
+                                        res.status(400).send("nao")
+                                        console.log("deuRUim2")
+                                        mongoclient2.close();
+                                    } else {
+                                        if (resultados.length > 0) {
+
+                                            let nome = resultados[0].nome
+                                            let doc = new PDFDocument();
+                                            doc.y = 320;
+                                            doc.fillColor('black')
+                                            doc.text("CONSELHO REGIONAL DE ODONTOLOGIA DO RIO DE JANEIRO " + "NOME: " + nome + ' DATA: ' + results[0].dataPonto
+                                                + "HORA DO PONTO: " + results[0].ponto.replace("1000", "Início de Expediente") + idaAlmoço + voltaAlmoço + saida, {
+                                                    paragraphGap: 10,
+                                                    indent: 20,
+                                                    align: 'justify',
+                                                    columns: 2
+                                                });
+
+                                            doc.end();
+                                            doc.pipe(res);
+                                            mongoclient2.close();
+
+                                        }
+                                    }
+                                })
+                            })
+                        })
+
+                        mongoclient.close()
+                    } else {
+                        console.log("nao tem comprovante de hj ainda")
+                    }
+                }
+                mongoclient.close()
+            })
+        })
+
+
+    })
 
     // fs.readFile('/images/logo.png', function(err,data){
     //     if(err) {
     //         console.error("Could not open file: %s", err);
     //         process.exit(1);
     //     }
-        
+
     //     console.log(data);
     // });
 
     // console.log(__dirname)
-    
-//     doc.image("api/logo.png", 320, 145, {width: 200, height: 100})
-//    .text('Stretch', 320, 130);
-    
-   // vou criar aqui as variaveis de dados de ponto do banco de dados
 
-    
-   doc.y = 320;
-    doc.fillColor('black')
-    doc.text('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam in...', {
-        paragraphGap: 10,
-        indent: 20,
-        align: 'justify',
-        columns: 2
-    });
-    
-    doc.end();
-    doc.pipe( res);
-    
-    
+    //     doc.image("api/logo.png", 320, 145, {width: 200, height: 100})
+    //    .text('Stretch', 320, 130);
+
+
 }
 
 
@@ -106,10 +162,10 @@ module.exports.verificaPonto = function (application, req, res) {
 
 module.exports.inserePonto = function (application, req, res) {
 
-    let usuario = req.session.usuario;
+    //let usuario = req.session.usuario;
     var _id = req.session._id;
 
-    console.log(_id)
+    //console.log(_id)
 
     let connection = application.config.dbConnection;
 

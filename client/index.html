@@ -38,7 +38,7 @@
     </div>
 
     <div>
-            <br><br><br><br>
+        <br><br><br><br>
         <button id="btn-comprovante" type="submit"> Imprimir Comprovante </button>
 
     </div>
@@ -48,9 +48,33 @@
 
 <script>
 
-    document.getElementById("btn-comprovante").addEventListener("click", function(event){
+    document.getElementById("btn-comprovante").addEventListener("click", function (event) {
         event.preventDefault();
 
+        
+        var xhr = new XMLHttpRequest();
+
+        xhr.onreadystatechange = function () {
+            
+            if (xhr.readyState == 4) {
+                var resposta = xhr.responseText;
+                // console.log(resposta)
+                
+                //talvez sirva para recarregar a pagina
+                xhr.onload = function () {
+                    if (resposta === "naotemComprovanteHoje") {
+                        console.log("nãotemmmmm")
+                    }
+                    
+                }
+                
+                
+                //  document.write(Date());
+                
+                
+                
+            }
+        }
         window.location.href = "http://localhost:8080/api/imprimeComprovante";
 
     })
@@ -154,6 +178,13 @@
 
                 //talvez sirva para recarregar a pagina
                 xhr1.onload = function () {
+
+                    if(resposta1 === "0"){
+                        let botaoComprovante  = document.getElementById("btn-comprovante");
+                        botaoComprovante.disabled = true;
+                        botaoComprovante.innerHTML = "Sem registros de pontos hoje";
+                    }
+
                     if (resposta1 === "1000") {
                         let selectPonto = document.getElementById("selectPonto");
 

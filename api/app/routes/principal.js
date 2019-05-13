@@ -25,14 +25,15 @@ application.post("/api/autenticar", function(req,res){
     application.app.controllers.principal.autenticar(application,req,res);
 })
 
+application.get("/api/imprimeComprovante", function(req,res){
+    application.app.controllers.principal.imprimeComprovante(application,req,res);
+})
+
 application.get("/api/sair", function(req,res){
     application.app.controllers.principal.sair(application,req,res);
 })
 
 
-application.get("/api/imprimeComprovante", function(req,res){
-    application.app.controllers.principal.imprimeComprovante(application,req,res);
-})
 
 
 }
