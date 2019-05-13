@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="./public/css/estilo.css" />
 </head>
 
-<body onload="hora();data();verificaPonto()">
+<body id="body-index" onload="hora();data();verificaPonto()">
 
     <div id="dataPonto">
 
@@ -117,11 +117,11 @@
 
                 //talvez sirva para recarregar a pagina
                 xhr.onload = function () {
-                    if (resposta === "adicionar") {
-                        console.log("cheguei do adicionar")
+                    if (resposta === "adicionado") {
+                        location.href = "sucesso.html"
                     }
-                    if (resposta === "atualizar") {
-                        console.log("cheguei do atualizar")
+                    if (resposta === "atualizado") {
+                        location.href = "sucesso.html"
                     }
                 }
 
@@ -136,7 +136,7 @@
         xhr.open("POST", "http://localhost:8080/api/inserePonto");
         xhr.send(formData);
 
-        location.reload()
+      //  location.reload()
 
 
     });
@@ -176,7 +176,7 @@
                 var resposta1 = xhr1.responseText;
                 //console.log(resposta1)
 
-                //talvez sirva para recarregar a pagina
+                
                 xhr1.onload = function () {
 
                     if(resposta1 === "0"){

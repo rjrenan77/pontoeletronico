@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html class="no-js">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>CRO-RJ Sistema de Ponto Eletrônico</title>
+
+    <link rel="stylesheet" href="public/css/estilo.css">
+</head>
+
+<body >
+
+    <img id="ok" src="public/images/pontoRegistrado.gif" />
+    <br>
+    <!-- Retornando à página principal em 15 segundos.. -->
+    <button id="voltar-index">Voltar</button>
+
+
+    <script>
+        document.getElementById("voltar-index").addEventListener("click", function (event) {
+            event.preventDefault();
+
+            location.href = "index.html";
+        })
+    </script>
+
+
+</body>
+
+</html>

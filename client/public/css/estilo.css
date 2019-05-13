@@ -1,5 +1,11 @@
-body {
+#body-index {
     background-color: #F0FFFF;
     font-family: 'Courier New', Courier, monospace;
     color: #000000; 
+}
+
+#ok{
+    border: none;
+    width: 50%;
+    height: 100%;
 }
