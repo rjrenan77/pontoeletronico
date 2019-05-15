@@ -16,19 +16,19 @@ module.exports.imprimeComprovante = function (application, req, res) {
                     if (results.length > 0) {
                         //console.log(results[0].pontoRestoDoDia[0]);
 
-                        var idaAlmoço = ""
-                        var voltaAlmoço = ""
-                        var saida = ""
+                        var idaAlmoço = "SAÍDA PARA O ALMOÇO: AINDA NÃO REGISTRADO"
+                        var voltaAlmoço = "VOLTA DO ALMOÇO: AINDA NÃO REGISTRADO"
+                        var saida = "FIM DO EXPEDIENTE: AINDA NÃO REGISTRADO"
 
 
                         // verifico a existencia de pontos do resto do dia
-                        if(results[0].pontoRestoDoDia != undefined){
+                        if (results[0].pontoRestoDoDia != undefined) {
                             if (results[0].pontoRestoDoDia[0] != undefined) {
-                                idaAlmoço = results[0].pontoRestoDoDia[0].replace("2000", " Ida ao almoço:")
+                                idaAlmoço = results[0].pontoRestoDoDia[0].replace("2000", "SAÍDA PARA O ALMOÇO: ")
                             } if (results[0].pontoRestoDoDia[1] != undefined) {
-                                voltaAlmoço = results[0].pontoRestoDoDia[1].replace("3000", " Volta do almoço:")
+                                voltaAlmoço = results[0].pontoRestoDoDia[1].replace("3000", "VOLTA DO ALMOÇO: " )
                             } if (results[0].pontoRestoDoDia[2] != undefined) {
-                                saida = results[0].pontoRestoDoDia[2].replace("4000", " Fim do expediente:")
+                                saida = results[0].pontoRestoDoDia[2].replace("4000", "FIM DO EXPEDIENTE: ")
                             }
                         }
 
@@ -44,18 +44,84 @@ module.exports.imprimeComprovante = function (application, req, res) {
                                         mongoclient2.close();
                                     } else {
                                         if (resultados.length > 0) {
-
-                                            let nome = resultados[0].nome
+                                            let nome  = resultados[0].nome;
                                             let doc = new PDFDocument();
-                                            doc.y = 320;
+                                            doc.y = 3200
                                             doc.fillColor('black')
-                                            doc.text("CONSELHO REGIONAL DE ODONTOLOGIA DO RIO DE JANEIRO " + "NOME: " + nome + ' DATA: ' + results[0].dataPonto
-                                                + "HORA DO PONTO: " + results[0].ponto.replace("1000", "Início de Expediente") + idaAlmoço + voltaAlmoço + saida, {
-                                                    paragraphGap: 10,
-                                                    indent: 20,
-                                                    align: 'justify',
-                                                    columns: 2
-                                                });
+
+
+                                           
+                                            doc
+                                            .font("Times-Bold")
+                                            .text("CONSELHO REGIONAL DE ODONTOLOGIA DO RIO DE JANEIRO ", 100,100, {
+
+                                                indent: 20,
+                                                align: 'justify',
+                                                
+                                              
+                                            });
+
+                                            doc.moveDown();
+
+                                            doc
+                                            .font("Times-Roman")
+                                            .text("NOME: " + nome, {
+
+                                                indent: 20,
+                                                align: 'justify',
+                                              
+                                            });
+
+                                            doc.moveDown(0.3);
+
+                                            doc.text("DATA: " + results[0].dataPonto, {
+
+                                                indent: 20,
+                                                align: 'justify',
+                                              
+                                            });
+
+                                            doc.moveDown(0.3);
+
+                                            doc.text( results[0].ponto.replace("1000", "INÍCIO DE EXPEDIENTE: "), {
+
+                                                indent: 20,
+                                                align: 'justify',
+                                              
+                                            });
+
+                                            doc.moveDown(0.3);
+
+                                            doc.text(idaAlmoço, {
+
+                                                indent: 20,
+                                                align: 'justify',
+                                              
+                                            });
+
+                                            doc.moveDown(0.3);
+
+                                            doc.text(voltaAlmoço , {
+
+                                                indent: 20,
+                                                align: 'justify',
+                                              
+                                            });
+
+                                            doc.moveDown(0.3);
+
+                                            doc.text(saida, {
+
+                                                indent: 20,
+                                                align: 'justify',
+                                              
+                                            });
+
+                                            doc.moveUp(0.3);
+
+
+
+                                            doc.rect(doc.x, 50 , 410, doc.y).stroke();
 
                                             doc.end();
                                             doc.pipe(res);

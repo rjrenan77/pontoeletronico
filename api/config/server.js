@@ -10,8 +10,10 @@ const expressSession = require("express-session")
 
 const app = express();
 
-
-app.use(express.static(__dirname + "/public"));
+//consegui setar os arquivos estáticos desse jeito abaixo, e quando for referenciar no html, coloca o resto do path ex.: /css/estilo.css
+app.use(express.static("./app/public"));
+app.set("view engine", "ejs");
+app.set("views", "./app/views")
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(expressValidator())

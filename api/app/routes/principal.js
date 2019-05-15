@@ -36,4 +36,5 @@ application.get("/api/sair", function(req,res){
 
 
 
+
 }
