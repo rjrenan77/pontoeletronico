@@ -17,12 +17,16 @@ module.exports.cadastraAdministrador = function(application,req,res){
     req.assert("senha", "Senha deve ser informado").notEmpty();
     req.assert("confirmaSenha", "Confirmação de Senha deve ser informado").notEmpty();
     
-
     var erros = req.validationErrors();
 
     if(erros){
         res.status(401).send("invalido")
         return
+    }else if(dadosForm.senha != dadosForm.confirmaSenha){
+
+        res.status(401).send("senhasnaoiguais")
+        return
+
     }else {
         let connection = application.config.dbConnection;
         let UsuarioDAO = new application.app.models.UsuarioDAO(connection);

@@ -19,8 +19,8 @@
         <label>Função: </label><input type="text" id="funcao" name="funcao" placeholder="Digite sua função..." />
         <label>Usuário: </label><input type="text" id="usuario" name="usuario" placeholder="Digite seu usuário..." />
 
-        <label>Senha: </label><input type="text" id="senha" name="senha" placeholder="Digite uma senha..." />
-        <label>Confirmação de Senha: </label><input type="text" id="confirmaSenha" name="confirmaSenha"
+        <label>Senha: </label><input type="password" id="senha" name="senha" placeholder="Digite uma senha..." />
+        <label>Confirmação de Senha: </label><input type="password" id="confirmaSenha" name="confirmaSenha"
             placeholder="Confirme sua senha..." />
 
         <button type="submit" id="botaoCadastro" name="botaoCadastro">Cadastrar</button>
@@ -40,7 +40,7 @@
             var funcao = document.getElementById("funcao").value;
             var usuario = document.getElementById("usuario").value;
             var senha = document.getElementById("senha").value;
-            var confirmaSenha = document.getElementById("confirmaSenha").value;
+           
 
 
             formData.append("nome", nome);
@@ -49,8 +49,7 @@
             formData.append("usuario", usuario);
 
             formData.append("senha", senha);
-            formData.append("confirmaSenha", confirmaSenha);
-
+            
 
             var xhr = new XMLHttpRequest();
 
@@ -69,6 +68,12 @@
 
                         }
 
+                        if (resposta === "senhasnaoiguais") {
+                            var msgValidacao = document.getElementById("msgValidacao");
+                            msgValidacao.innerHTML = "ATENÇÃO: Campos senha e confirmação devem ser iguais!"
+
+
+                        }
                     }
 
 
