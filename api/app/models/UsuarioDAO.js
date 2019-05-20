@@ -39,6 +39,17 @@ UsuarioDAO.prototype.autenticar = function(usuario, req,res){
 }
 
 
+UsuarioDAO.prototype.insere = function(novoUsuario){
+    this._connection.open(function(err,mongoclient){
+        mongoclient.collection("usuarios", function(err, collection){
+            collection.insert(novoUsuario);
+
+            mongoclient.close();
+        })
+    })
+}
+
+
 //montando data
 function dataHoje() {
     var data = new Date();

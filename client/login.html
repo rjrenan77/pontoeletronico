@@ -22,8 +22,6 @@
                 <input type="password" id="senha" name="senha" placeholder="Digite sua senha ....">
                 <p></p>
 
-                <input type="checkbox" name="salvar" /> Salvar dados <br />
-
                 <button type="submit" id="botaoLogin" name="botaoLogin">Entrar</button>
 
             </div>
@@ -32,30 +30,6 @@
         </form>
 
     </div>
-
-    <script>
-        window.enviarForm = function () {
-          var usuario = document.querySelector('[name="usuario"]').value;
-          var senha = document.querySelector('[name="senha"]').value;
-          var salvar = document.querySelector('[name="salvar"]').checked;
-      
-      
-            if(salvar){
-              window.localStorage.setItem('usuario', usuario);
-              window.localStorage.setItem('senha', senha);
-            }
-      
-          return false;
-        }
-      
-        var usuario = window.localStorage.getItem('usuario');
-        var senha = window.localStorage.getItem('senha');
-      
-        if(usuario && senha){
-            document.querySelector('[name="usuario"]').value = usuario;
-            document.querySelector('[name="senha"]').value = senha;
-        }
-      </script>
 
 
     <script>
