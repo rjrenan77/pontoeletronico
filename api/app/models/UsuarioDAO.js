@@ -1,26 +1,71 @@
 //importando modulo do crypto
 var crypto = require("crypto");
 
-function UsuarioDAO(connection){
+function UsuarioDAO(connection) {
     this._connection = connection();
 }
 
+UsuarioDAO.prototype.autenticarPainel = function (usuario, req, res, erros) {
 
-UsuarioDAO.prototype.autenticar = function(usuario, req,res){
+    // if (erros) {
+    //     res.status(401).send("invalido");
+    //     return
+    // }
 
-    
-    this._connection.open(function(err, mongoclient){
-        mongoclient.collection("usuarios", function(err, collection){
+    this._connection.open(function (err, mongoclient) {
+        mongoclient.collection("usuarios", function (err, collection) {
 
             var senhaCriptografada = crypto.createHash("md5").update(usuario.senha).digest("hex");
             usuario.senha = senhaCriptografada;
 
-            collection.find(usuario).toArray(function(err,results){
-                if(results[0] != undefined){
+            collection.find(usuario).toArray(function (err, results) {
+                if (results[0] != undefined) {
+
+                    if (results[0].adm === "1") {
+                        req.session.autorizado = true;
+
+                        req.session._id = results[0]._id;
+                        req.session.usuario = results[0].usuario;
+                        req.session.adm = results[0].adm;
+                        res.status(200).send("autorizado")
+
+                    } else {
+
+                        res.status(401).send("naoautorizado")
+
+                    }
+
+
+                }else {
+
+                    res.status(401).send("naoautorizado")
+
+                }
+
+
+            })
+
+            mongoclient.close();
+        })
+    })
+}
+
+
+UsuarioDAO.prototype.autenticar = function (usuario, req, res) {
+
+
+    this._connection.open(function (err, mongoclient) {
+        mongoclient.collection("usuarios", function (err, collection) {
+
+            var senhaCriptografada = crypto.createHash("md5").update(usuario.senha).digest("hex");
+            usuario.senha = senhaCriptografada;
+
+            collection.find(usuario).toArray(function (err, results) {
+                if (results[0] != undefined) {
 
                     //variaveis de sessao
-                    var dados = req.body;
-                    
+
+
                     req.session.autorizado = true;
 
                     req.session._id = results[0]._id;
@@ -29,10 +74,10 @@ UsuarioDAO.prototype.autenticar = function(usuario, req,res){
 
                 }
 
-                if(req.session.autorizado){
+                if (req.session.autorizado) {
                     res.status(200).send("autorizado")
                 }
-                else{
+                else {
                     res.status(401).send("naoautorizado")
                 }
             })
@@ -43,10 +88,10 @@ UsuarioDAO.prototype.autenticar = function(usuario, req,res){
 }
 
 
-UsuarioDAO.prototype.insere = function(novoUsuario){
-    this._connection.open(function(err,mongoclient){
-        mongoclient.collection("usuarios", function(err, collection){
-             
+UsuarioDAO.prototype.insere = function (novoUsuario) {
+    this._connection.open(function (err, mongoclient) {
+        mongoclient.collection("usuarios", function (err, collection) {
+
             delete novoUsuario.confirmaSenha;
 
             var senhaCriptografada = crypto.createHash("md5").update(novoUsuario.senha).digest("hex");
@@ -71,7 +116,7 @@ function dataHoje() {
     return dataFormatada
 }
 
-module.exports = function(){
+module.exports = function () {
     return UsuarioDAO;
 
 }

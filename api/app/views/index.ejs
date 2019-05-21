@@ -13,6 +13,7 @@
         <a id="pesquisar" >Pesquisar</a>
         <a id="cadastro-funcionario" >Cadastrar Funcionário</a>
         <a id="cadastro-administrador" >Cadastrar Administrador</a>
+        <a id="sair"  class="active">Sair</a>
     </div>
 
     <div id="conteudo">
@@ -45,7 +46,7 @@
         document.getElementById("cadastro-funcionario").addEventListener("click", function (event) {
             event.preventDefault();
 
-            let conteudo = document.getElementById("conteudo").innerHTML = "cadastro-funcionario";
+            document.getElementById("conteudo").innerHTML = '<iframe src="/painel/cadastrarFuncionario" heigth="1000" width="99.8%" id="iframecadastrafuncionario" name="iframecadastrafuncionario"/>'
 
 
         })

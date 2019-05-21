@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Painel - Sistema de Ponto CRO-RJ</title>
+    </head>
+<body>
+    <p id="msgValidacao"></p>
+    <form>
+        <label>Usuário: </label>
+        <input type="text" id="usuario" name="usuario" placeholder="Digite seu usuário"/>
+        <label>Senha: </label>
+        <input type="password" id="senha" name="senha" placeholder="Digite sua senha"/>
+        <button id="botaoEntrar" type="submit">Entrar</button>
+
+    </form>
+
+
+    <script>
+    
+        document.getElementById("botaoEntrar").addEventListener("click", function(event){
+            event.preventDefault();
+
+            var formData = new FormData();
+
+            var usuario = document.getElementById("usuario").value;
+            var senha = document.getElementById("senha").value;
+
+            formData.append("usuario", usuario);
+            formData.append("senha", senha);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.onreadystatechange = function(){
+
+                var resposta = xhr.responseText;
+                console.log(resposta);
+
+                xhr.onload = function(){
+                    if(resposta === "invalido"){
+                        document.getElementById("msgValidacao").innerHTML = "ATENÇÃO: CAMPOS USUÁRIO OU SENHA NÃO PODEM SER VAZIOS!";
+                    }
+                    if(resposta === "autorizado"){
+                        window.location="index"
+                    }
+                    if(resposta === "naoautorizado"){
+                        document.getElementById("msgValidacao").innerHTML = "ATENÇÃO: USUÁRIO NÃO IDENTIFICADO!";
+                    }
+                }
+
+            }
+
+            xhr.open("POST", "http://localhost:8080/painel/logon")
+            xhr.send(formData);
+
+
+        })
+    
+    </script>
+</body>
+</html>
