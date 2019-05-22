@@ -53,7 +53,7 @@
     </div>
 
 
-    <button>Gerar Relatório</button>
+    <button id="botaoGeraRelatorio">Gerar Relatório</button>
 
     <script>
 
@@ -68,19 +68,14 @@
 
                     var json = JSON.parse(resposta1)
 
-                    console.log(json[0].nome)
 
-
-                    xhr1.onload = function () {
-
-                        let selectFuncionario = document.getElementById("selectFuncionario");
+                    let selectFuncionario = document.getElementById("selectFuncionario");
+                    for (var i in json) {
                         var option = document.createElement("option");
-                        option.value = json[0]._id;
-                        option.text = "Matricula: " + json[0].matricula + " | Nome: " + json[0].nome + " | Função: " + json[0].funcao;
 
+                        option.value = json[i]._id;
+                        option.text = "Matricula: " + json[i].matricula + " | Nome: " + json[i].nome + " | Função: " + json[i].funcao;
                         selectFuncionario.add(option)
-
-                        
                     }
 
                 }
@@ -93,6 +88,55 @@
 
         }
 
+
+    </script>
+
+    <script>
+
+        document.getElementById("botaoGeraRelatorio").addEventListener("click", function (event) {
+            event.preventDefault();
+
+
+            var formData = new FormData();
+
+            let selectFuncionario = document.getElementById("selectFuncionario");
+            var idUsuario =  selectFuncionario.value;
+            var mes = document.getElementById("selectMes").value;
+            var ano = document.getElementById("selectAno").value;
+
+
+            formData.append("idUsuario", idUsuario);
+            formData.append("mes", mes);
+            formData.append("ano", ano);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.onreadystatechange = function () {
+
+                if (xhr.readyState == 4) {
+                    var resposta = xhr.responseText;
+                    console.log(resposta)
+
+                    //talvez sirva para recarregar a pagina
+                    xhr.onload = function () {
+                        if (resposta === "401") {
+                            var msgValidacao = document.getElementById("msgValidacao");
+                            msgValidacao.innerHTML = "ATENÇÃO: Usuário ou Senha Inválidos!"
+
+
+                        }
+
+                    }
+
+                }
+            }
+
+            xhr.open("POST", "http://localhost:8080/painel/geraRelatorio");
+            xhr.send(formData);
+
+
+
+        })
 
     </script>
 

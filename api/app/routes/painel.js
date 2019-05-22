@@ -44,6 +44,10 @@ module.exports = function(application){
         application.app.controllers.painel.logon(application,req,res);
     })
 
+    application.post("/painel/geraRelatorio", function(req,res){
+        application.app.controllers.painel.geraRelatorio(application,req,res);
+    })
+
 
 
 }

@@ -146,3 +146,160 @@ module.exports.retornaFuncionarios = function (application, req, res) {
         })
     })
 }
+
+module.exports.geraRelatorio = function (application, req, res) {
+
+
+    var dadosForm = req.body;
+    var idUsuario = dadosForm.idUsuario;
+    var mes = dadosForm.mes;
+    var ano = dadosForm.ano;
+
+
+    let connection = application.config.dbConnection;
+
+    connection().open(function (err, mongoclient) {
+        mongoclient.collection("pontos", function (err, collection) {
+            collection.find({ "idUsuario": idUsuario, "dataPonto": { $regex: "/"+mes+"/"+ano } }).toArray(function (err, results) {
+
+                //fazer aqui a lógica para gerar o relatorio do mes
+                if(results.length > 0){
+                    console.log(results[0])
+                }
+                // if (err) {
+                //     res.status(400).send("nao")
+                //     console.log("deuRuim")
+                //     mongoclient.close()
+                // } else {
+                //     if (results.length > 0) {
+                //         //console.log(results[0].pontoRestoDoDia[0]);
+
+                //         var idaAlmoço = "SAÍDA PARA O ALMOÇO: AINDA NÃO REGISTRADO"
+                //         var voltaAlmoço = "VOLTA DO ALMOÇO: AINDA NÃO REGISTRADO"
+                //         var saida = "FIM DO EXPEDIENTE: AINDA NÃO REGISTRADO"
+
+
+                //         // verifico a existencia de pontos do resto do dia
+                //         if (results[0].pontoRestoDoDia != undefined) {
+                //             if (results[0].pontoRestoDoDia[0] != undefined) {
+                //                 idaAlmoço = results[0].pontoRestoDoDia[0].replace("2000", "SAÍDA PARA O ALMOÇO: ")
+                //             } if (results[0].pontoRestoDoDia[1] != undefined) {
+                //                 voltaAlmoço = results[0].pontoRestoDoDia[1].replace("3000", "VOLTA DO ALMOÇO: " )
+                //             } if (results[0].pontoRestoDoDia[2] != undefined) {
+                //                 saida = results[0].pontoRestoDoDia[2].replace("4000", "FIM DO EXPEDIENTE: ")
+                //             }
+                //         }
+
+                //         //busco dados de usuario em outro documento
+                //         connection().open(function (err, mongoclient2) {
+                //             mongoclient2.collection("usuarios", function (err, collection) {
+                //                 collection.find({ "_id": { $eq: ObjectID(req.session._id) } }).toArray(function (err, resultados) {
+
+
+                //                     if (err) {
+                //                         res.status(400).send("nao")
+                //                         console.log("deuRUim2")
+                //                         mongoclient2.close();
+                //                     } else {
+                //                         if (resultados.length > 0) {
+                //                             let nome  = resultados[0].nome;
+                //                             let doc = new PDFDocument();
+                //                             doc.y = 3200
+                //                             doc.fillColor('black')
+
+
+                                           
+                //                             doc
+                //                             .font("Times-Bold")
+                //                             .text("CONSELHO REGIONAL DE ODONTOLOGIA DO RIO DE JANEIRO ", 100,100, {
+
+                //                                 indent: 20,
+                //                                 align: 'justify',
+                                                
+                                              
+                //                             });
+
+                //                             doc.moveDown();
+
+                //                             doc
+                //                             .font("Times-Roman")
+                //                             .text("NOME: " + nome, {
+
+                //                                 indent: 20,
+                //                                 align: 'justify',
+                                              
+                //                             });
+
+                //                             doc.moveDown(0.3);
+
+                //                             doc.text("DATA: " + results[0].dataPonto, {
+
+                //                                 indent: 20,
+                //                                 align: 'justify',
+                                              
+                //                             });
+
+                //                             doc.moveDown(0.3);
+
+                //                             doc.text( results[0].ponto.replace("1000", "INÍCIO DE EXPEDIENTE: "), {
+
+                //                                 indent: 20,
+                //                                 align: 'justify',
+                                              
+                //                             });
+
+                //                             doc.moveDown(0.3);
+
+                //                             doc.text(idaAlmoço, {
+
+                //                                 indent: 20,
+                //                                 align: 'justify',
+                                              
+                //                             });
+
+                //                             doc.moveDown(0.3);
+
+                //                             doc.text(voltaAlmoço , {
+
+                //                                 indent: 20,
+                //                                 align: 'justify',
+                                              
+                //                             });
+
+                //                             doc.moveDown(0.3);
+
+                //                             doc.text(saida, {
+
+                //                                 indent: 20,
+                //                                 align: 'justify',
+                                              
+                //                             });
+
+                //                             doc.moveUp(0.3);
+
+
+
+                //                             doc.rect(doc.x, 50 , 410, doc.y).stroke();
+
+                //                             doc.end();
+                //                             doc.pipe(res);
+                //                             mongoclient2.close();
+
+                //                         }
+                //                     }
+                //                 })
+                //             })
+                //         })
+
+                //         mongoclient.close()
+                //     } else {
+                //         console.log("nao tem comprovante de hj ainda")
+                //     }
+                // }
+                mongoclient.close()
+            })
+        })
+
+
+    })
+}
