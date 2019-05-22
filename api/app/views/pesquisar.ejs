@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Painel - Sistema de Ponto CRO-RJ</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+</head>
+
+<body onload="retornaFuncionarios()">
+
+    <div id="funcionario">
+
+        <select id="selectFuncionario" required>
+
+
+        </select>
+
+    </div>
+
+    <div id="mes">
+
+        <select id="selectMes" required>
+
+            <option value="1">Janeiro</option>
+            <option value="2">Fevereiro</option>
+            <option value="3">Março</option>
+            <option value="4">Abril</option>
+            <option value="5">Maio</option>
+            <option value="6">Junho</option>
+            <option value="7">Julho</option>
+            <option value="8">Agosto</option>
+            <option value="9">Setembro</option>
+            <option value="10">Outubro</option>
+            <option value="11">Novembro</option>
+            <option value="12">Dezembro</option>
+        </select>
+
+    </div>
+
+    <div id="ano">
+
+        <select id="selectAno" required>
+
+            <option value="2019">2019</option>
+            <option value="2020">2020</option>
+            <option value="2021">2021</option>
+            <option value="2022">2022</option>
+        </select>
+
+    </div>
+
+
+    <button>Gerar Relatório</button>
+
+    <script>
+
+        function retornaFuncionarios() {
+
+            var xhr1 = new XMLHttpRequest();
+
+            xhr1.onreadystatechange = function () {
+
+                if (xhr1.readyState == 4) {
+                    var resposta1 = xhr1.responseText;
+
+                    var json = JSON.parse(resposta1)
+
+                    console.log(json[0].nome)
+
+
+                    xhr1.onload = function () {
+
+                        let selectFuncionario = document.getElementById("selectFuncionario");
+                        var option = document.createElement("option");
+                        option.value = json[0]._id;
+                        option.text = "Matricula: " + json[0].matricula + " | Nome: " + json[0].nome + " | Função: " + json[0].funcao;
+
+                        selectFuncionario.add(option)
+
+                        
+                    }
+
+                }
+            }
+
+
+
+            xhr1.open("GET", "http://localhost:8080/painel/retornaFuncionarios")
+            xhr1.send();
+
+        }
+
+
+    </script>
+
+</html>

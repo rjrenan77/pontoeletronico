@@ -145,21 +145,6 @@ module.exports.imprimeComprovante = function (application, req, res) {
 
     })
 
-    // fs.readFile('/images/logo.png', function(err,data){
-    //     if(err) {
-    //         console.error("Could not open file: %s", err);
-    //         process.exit(1);
-    //     }
-
-    //     console.log(data);
-    // });
-
-    // console.log(__dirname)
-
-    //     doc.image("api/logo.png", 320, 145, {width: 200, height: 100})
-    //    .text('Stretch', 320, 130);
-
-
 }
 
 

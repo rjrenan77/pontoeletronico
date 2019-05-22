@@ -127,3 +127,22 @@ module.exports.sair = function (application, req, res) {
         res.render("login")
     })
 }
+
+module.exports.pesquisar = function (application, req, res) {
+    res.render("pesquisar")
+}
+
+module.exports.retornaFuncionarios = function (application, req, res) {
+
+    let connection = application.config.dbConnection
+
+    connection().open(function (err, mongoclient) {
+        mongoclient.collection("usuarios", function (err, collection) {
+            collection.find({ "adm": "0" }).toArray(function (err, resultados) {
+                console.log(resultados)
+                mongoclient.close()
+                res.send(resultados)
+            })
+        })
+    })
+}
