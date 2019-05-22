@@ -128,8 +128,8 @@ module.exports.sair = function (application, req, res) {
     })
 }
 
-module.exports.pesquisar = function (application, req, res) {
-    res.render("pesquisar")
+module.exports.relatorio = function (application, req, res) {
+    res.render("relatorio")
 }
 
 module.exports.retornaFuncionarios = function (application, req, res) {

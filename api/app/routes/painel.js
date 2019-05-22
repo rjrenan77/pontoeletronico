@@ -23,8 +23,8 @@ module.exports = function(application){
         application.app.controllers.painel.sair(application,req,res);  
     })
 
-    application.get("/painel/pesquisar", function(req, res){
-        application.app.controllers.painel.pesquisar(application,req,res);  
+    application.get("/painel/relatorio", function(req, res){
+        application.app.controllers.painel.relatorio(application,req,res);  
     })
 
     application.get("/painel/retornaFuncionarios", function(req, res){

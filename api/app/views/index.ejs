@@ -10,7 +10,7 @@
 <body>
     <div id="menu"  class="topnav">
         <a id="home"  class="active">Home</a>
-        <a id="pesquisar" >Pesquisar</a>
+        <a id="relatorio" >Gerar Relatório de Ponto</a>
         <a id="cadastro-funcionario" >Cadastrar Funcionário</a>
         <a id="cadastro-administrador" >Cadastrar Administrador</a>
         <a id="sair"  class="active">Sair</a>
@@ -33,10 +33,10 @@
 
         })
 
-        document.getElementById("pesquisar").addEventListener("click", function (event) {
+        document.getElementById("relatorio").addEventListener("click", function (event) {
             event.preventDefault();
 
-            let conteudo = document.getElementById("conteudo").innerHTML = '<iframe src="/painel/pesquisar" heigth="10000" width="99.8%" id="iframepesquisar" name="iframepesquisar"/>';
+            let conteudo = document.getElementById("conteudo").innerHTML = '<iframe src="/painel/relatorio" heigth="10000" width="99.8%" id="iframepesquisar" name="iframepesquisar"/>';
 
             
 
