@@ -19,6 +19,10 @@ module.exports = function(application){
         application.app.controllers.painel.login(application,req,res);
     })
 
+    application.get("/painel/sair", function(req, res){
+        application.app.controllers.painel.sair(application,req,res);  
+    })
+
 
     application.post("/painel/cadastraAdministrador", function(req, res){
         application.app.controllers.painel.cadastraAdministrador(application, req,res);

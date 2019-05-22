@@ -29,7 +29,7 @@ module.exports.index = function (application, req, res) {
 
         res.render("index")
     } else {
-        res.send("usuario precisa fazer login")
+        res.render("naoAutenticado")
     }
 }
 
@@ -37,14 +37,14 @@ module.exports.cadastrarFuncionario = function (application, req, res) {
     if (req.session.autorizado)
         res.render("cadastrarFuncionario")
     else
-        res.send("usuario precisa fazer login")
+        res.render("naoAutenticado")
 }
 
 module.exports.cadastrarAdministrador = function (application, req, res) {
     if (req.session.autorizado)
         res.render("cadastrarAdministrador")
     else
-        res.send("usuario precisa fazer login")
+        res.render("naoAutenticado")
 
 }
 
@@ -120,4 +120,10 @@ module.exports.cadastraFuncionario = function (application, req, res) {
     }
 
 
+}
+
+module.exports.sair = function (application, req, res) {
+    req.session.destroy(function (err) {
+        res.render("login")
+    })
 }
