@@ -1,8 +1,5 @@
 const ObjectID = require("mongodb").ObjectID
-const PDFDocument = require('pdfkit');
 
-var fs = require('fs');
-const blobStream = require('blob-stream');
 
 module.exports.login = function (application, req, res) {
     res.render("login")
@@ -40,6 +37,7 @@ module.exports.index = function (application, req, res) {
 }
 
 module.exports.cadastrarFuncionario = function (application, req, res) {
+
     if (req.session.autorizado)
         res.render("cadastrarFuncionario")
     else
@@ -47,6 +45,7 @@ module.exports.cadastrarFuncionario = function (application, req, res) {
 }
 
 module.exports.cadastrarAdministrador = function (application, req, res) {
+
     if (req.session.autorizado)
         res.render("cadastrarAdministrador")
     else
@@ -191,9 +190,7 @@ module.exports.geraRelatorio = function (application, req, res) {
                                     } else {
                                         if (resultados.length > 0) {
 
-                                            // let nome = resultados[0].nome+"/1";
-                                            // let funcao = resultados[0].funcao+"/2";
-                                            // let matricula = resultados[0].matricula+"/3";
+
 
                                             var dataPonto = []
                                             for (var i in results) {
@@ -208,21 +205,18 @@ module.exports.geraRelatorio = function (application, req, res) {
                                             var pontoRestoDoDia = []
                                             for (var i in results) {
 
-                                               pontoRestoDoDia.push(results[i].pontoRestoDoDia)
+                                                pontoRestoDoDia.push(results[i].pontoRestoDoDia)
                                             }
 
-                                            //     console.log(dataPonto)
-                                            //     console.log(ponto)
-                                            //     console.log(pontoRestoDoDia)
 
-                                            //    console.log(`${dataPonto} ${ponto} ${pontoRestoDoDia}`)
                                             var arrayFinal = [];
                                             for (var i in results) {
-
-
+                                                if (pontoRestoDoDia[i] === undefined)
+                                                    pontoRestoDoDia[i] = ""
 
                                                 arrayFinal[i] = `${dataPonto[i]} ${ponto[i]} ${pontoRestoDoDia[i]} <br/>`
                                             }
+                                            console.log(arrayFinal)
                                             res.send(arrayFinal)
 
 

@@ -57,8 +57,10 @@ UsuarioDAO.prototype.autenticar = function (usuario, req, res) {
     this._connection.open(function (err, mongoclient) {
         mongoclient.collection("usuarios", function (err, collection) {
 
+            
+
             var senhaCriptografada = crypto.createHash("md5").update(usuario.senha).digest("hex");
-            usuario.senha = senhaCriptografada;
+             usuario.senha = senhaCriptografada;
 
             collection.find(usuario).toArray(function (err, results) {
                 if (results[0] != undefined) {

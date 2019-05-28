@@ -4,28 +4,36 @@
 <head>
     <meta charset="UTF-8">
     <title>Painel - Sistema de Ponto CRO-RJ</title>
+    <link rel="stylesheet" type="text/css" href="/css/estiloConteudo.css">
 </head>
 
 <body>
 
     <form>
+        <ul class="form-style-1">
+            <p id="msgValidacao"><h3></h3></p>
+
+            <li> <label>Nome: <span class="required">*</span> </label> <input type="text" id="nome" name="nome"
+                    placeholder="Digite seu nome completo..." /></li>
+            <li> <label>Matrícula: <span class="required">*</span></label><input type="text" id="matricula"
+                    name="matricula" placeholder="Digite sua matrícula..." /></li>
+            <li> <label>Função: <span class="required">*</span></label><input type="text" id="funcao" name="funcao"
+                    placeholder="Digite sua função..." /></li>
+            <li> <label>Usuário: <span class="required">*</span></label><input type="text" id="usuario" name="usuario"
+                    placeholder="Digite seu usuário..." /></li>
+
+            <li> <label>Senha:
+                    <span class="required">*</span></label><input type="password" id="senha" name="senha"
+                    placeholder="Digite uma senha..." /></li>
+
+            <li> <label>Confirmação de Senha: <span class="required">*</span></label><input type="password"
+                    id="confirmaSenha" name="confirmaSenha" placeholder="Confirme sua senha..." /></li>
+
+            <li> <button type="submit" id="botaoCadastro" name="botaoCadastro">Cadastrar</button>
+            </li>
 
 
-        <p id="msgValidacao"></p>
-
-        <label>Nome: </label><input type="text" id="nome" name="nome" placeholder="Digite seu nome completo..." />
-        <label>Matrícula: </label><input type="text" id="matricula" name="matricula"
-            placeholder="Digite sua matrícula..." />
-        <label>Função: </label><input type="text" id="funcao" name="funcao" placeholder="Digite sua função..." />
-        <label>Usuário: </label><input type="text" id="usuario" name="usuario" placeholder="Digite seu usuário..." />
-
-        <label>Senha: </label><input type="password" id="senha" name="senha" placeholder="Digite uma senha..." />
-        <label>Confirmação de Senha: </label><input type="password" id="confirmaSenha" name="confirmaSenha"
-            placeholder="Confirme sua senha..." />
-
-        <button type="submit" id="botaoCadastro" name="botaoCadastro">Cadastrar</button>
-
-
+        </ul>
     </form>
 
     <script>
@@ -81,12 +89,12 @@
                             var msgValidacao = document.getElementById("msgValidacao");
                             msgValidacao.innerHTML = "ATENÇÃO: Novo funcionário para registro de ponto cadastrado com sucesso!"
 
-                           document.getElementById("nome").value = "";
-                           document.getElementById("matricula").value = "";
-                           document.getElementById("funcao").value = "";
-                           document.getElementById("usuario").value = ""
-                           document.getElementById("senha").value = "";
-                           document.getElementById("confirmaSenha").value = "";
+                            document.getElementById("nome").value = "";
+                            document.getElementById("matricula").value = "";
+                            document.getElementById("funcao").value = "";
+                            document.getElementById("usuario").value = ""
+                            document.getElementById("senha").value = "";
+                            document.getElementById("confirmaSenha").value = "";
 
 
                         }
