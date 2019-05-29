@@ -4,44 +4,58 @@
     <meta charset="UTF-8">
     <title> CRO-RJ Sistema de Ponto Eletrônico</title>
 
-    <link rel="stylesheet" type="text/css" href="./public/css/estilo.css" />
+    <link rel="stylesheet" type="text/css" href="public/css/estiloConteudo.css" />
 </head>
 
 <body id="body-index" onload="hora();data();verificaPonto()">
 
-    <div id="dataPonto">
+    <div class="conteudo">
+
+        <div id="registroLabel">
+
+            <center>
+                <h2>Registre seu horário</h2>
+            </center>
+
+        </div>
+
+        <div id="dataPonto">
+
+        </div>
+        <!-- posso botar hora aqui -->
+        <div id="horaPonto">
+
+        </div>
+
+        <div id="tipoPonto">
+
+            <select id="selectPonto" required>
+
+                <option value="1000">Chegada ao local de Trabalho</option>
+                <option value="2000">Ir Almoçar</option>
+                <option value="3000">Volta do Almoço</option>
+                <option value="4000">Saída do Local de Trabalho</option>
+            </select>
+
+        </div>
+
+        <div>
+
+            <button id="btn-ponto" type="submit">BATER PONTO</button>
+
+            <button id="btn-sair" type="submit">Sair</button>
+
+        </div>
+
+        <div>
+            <br><br>
+            <button id="btn-comprovante" type="submit"> Imprimir Comprovante </button>
+
+        </div>
+
 
     </div>
-    <!-- posso botar hora aqui -->
-    <div id="horaPonto">
 
-    </div>
-
-    <div id="tipoPonto">
-
-        <select id="selectPonto" required>
-
-            <option value="1000">Chegada ao local de Trabalho</option>
-            <option value="2000">Ir Almoçar</option>
-            <option value="3000">Volta do Almoço</option>
-            <option value="4000">Saída do Local de Trabalho</option>
-        </select>
-
-    </div>
-
-    <div>
-
-        <button id="btn-ponto" type="submit">BATER PONTO</button>
-
-        <button id="btn-sair" type="submit">Sair</button>
-
-    </div>
-
-    <div>
-        <br><br><br><br>
-        <button id="btn-comprovante" type="submit"> Imprimir Comprovante </button>
-
-    </div>
 
 
 </body>
@@ -51,28 +65,28 @@
     document.getElementById("btn-comprovante").addEventListener("click", function (event) {
         event.preventDefault();
 
-        
+
         var xhr = new XMLHttpRequest();
 
         xhr.onreadystatechange = function () {
-            
+
             if (xhr.readyState == 4) {
                 var resposta = xhr.responseText;
                 // console.log(resposta)
-                
+
                 //talvez sirva para recarregar a pagina
                 xhr.onload = function () {
                     if (resposta === "naotemComprovanteHoje") {
                         console.log("nãotemmmmm")
                     }
-                    
+
                 }
-                
-                
+
+
                 //  document.write(Date());
-                
-                
-                
+
+
+
             }
         }
         window.location.href = "http://localhost:8080/api/imprimeComprovante";
@@ -93,8 +107,8 @@
 
         var idUsuario = "";
         var tipoPonto = document.getElementById("selectPonto").value;
-        var dataPonto = data();
-        var horaPonto = hora();
+        var dataPonto = data().replace("Data: ", "");
+        var horaPonto = hora().replace("Hora: ", "");;
 
         var ponto = tipoPonto + " " + horaPonto;
 
@@ -136,7 +150,7 @@
         xhr.open("POST", "http://localhost:8080/api/inserePonto");
         xhr.send(formData);
 
-      //  location.reload()
+        //  location.reload()
 
 
     });
@@ -160,7 +174,7 @@
 <script>
     //ao inves de enviar o usuario, pega ele já no back end atraves da variavel de sessao e verifica o ponto, verificar o obejctId
 
-    function verificaPonto(idUsuario1, dataHoje1 = data()) {
+    function verificaPonto(idUsuario1, dataHoje1 = data().replace("Data: ", "")) {
 
         //se usuario já tem tipo de  ponto naquela data, desativa botao respectivo
         var formData1 = new FormData();
@@ -176,11 +190,11 @@
                 var resposta1 = xhr1.responseText;
                 //console.log(resposta1)
 
-                
+
                 xhr1.onload = function () {
 
-                    if(resposta1 === "0"){
-                        let botaoComprovante  = document.getElementById("btn-comprovante");
+                    if (resposta1 === "0") {
+                        let botaoComprovante = document.getElementById("btn-comprovante");
                         botaoComprovante.disabled = true;
                         botaoComprovante.innerHTML = "Sem registros de pontos hoje";
                     }
@@ -263,7 +277,7 @@
         var mes = data.getMonth() + 1;
         var ano = data.getFullYear();
 
-        dataFormatada = dia + "/" + mes + "/" + ano;
+        dataFormatada = "Data: "+dia + "/" + mes + "/" + ano;
 
         document.getElementById("dataPonto").innerHTML = dataFormatada;
 
@@ -281,7 +295,7 @@
         m = acrescentaZero(m);
         s = acrescentaZero(s);
 
-        var hora = h + ":" + m + ":" + s;
+        var hora = "Hora: " + h + ":" + m + ":" + s;
 
         document.getElementById("horaPonto").innerHTML = hora;
 

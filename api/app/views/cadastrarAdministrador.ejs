@@ -79,6 +79,13 @@
 
                         }
 
+                        if (resposta === "jatemusuario") {
+                            var msgValidacao = document.getElementById("msgValidacao");
+                            msgValidacao.innerHTML = "ATENÇÃO: Usuário já existente no sistema!"
+
+
+                        }
+
                         if (resposta === "senhasnaoiguais") {
                             var msgValidacao = document.getElementById("msgValidacao");
                             msgValidacao.innerHTML = "ATENÇÃO: Campos senha e confirmação devem ser iguais!"

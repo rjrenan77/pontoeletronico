@@ -3,6 +3,7 @@ var crypto = require("crypto");
 
 function UsuarioDAO(connection) {
     this._connection = connection();
+    this._vai;
 }
 
 UsuarioDAO.prototype.autenticarPainel = function (usuario, req, res, erros) {
@@ -120,5 +121,37 @@ function dataHoje() {
 
 module.exports = function () {
     return UsuarioDAO;
+
+}
+
+UsuarioDAO.prototype.verificaExistenciaUsuario = function (usuario, callback) {
+
+    
+    this._connection.open(function (err, mongoclient) {
+        mongoclient.collection("usuarios", function (err, collection) {
+
+            console.log(usuario)
+            
+            collection.find({"usuario": { $eq: usuario }}).toArray(function (err, results) {
+                console.log(results)
+                if (results.length>0) {
+                   
+                    callback(true)
+                    
+                    
+                }else{
+                    console.log("nao tem usuario")
+                    callback(false)
+                    
+                }
+
+
+            })
+
+            mongoclient.close();
+
+        })
+    })
+
 
 }

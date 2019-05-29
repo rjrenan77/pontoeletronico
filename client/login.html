@@ -6,23 +6,50 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title> CRO-RJ Sistema de Ponto Eletrônico</title>
-    <link rel="stylesheet" href="">
+    <link rel="stylesheet" type="text/css" href="public/css/estiloLogin.css">
 </head>
 
 <body>
     <div>
         <form>
             <div>
-                <p id="msgValidacao"></p>
 
-                <p>Usuário</p>
-                <input type="text" id="usuario" name="usuario" placeholder="Digite seu usuário..." />
 
-                <p>Senha</p>
-                <input type="password" id="senha" name="senha" placeholder="Digite sua senha ....">
-                <p></p>
+                <div class="login-wrap">
 
-                <button type="submit" id="botaoLogin" name="botaoLogin">Entrar</button>
+                    <div class="login-html">
+                        <p id="msgValidacao"></p>
+                        <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1"
+                            class="tab">SISTEMA DE REGISTRO DE PONTO - CRO-RJ</label>
+
+                        <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2"
+                            class="tab"></label>
+
+                        <div class="login-form">
+                            <div class="sign-in-htm">
+                                <div class="group">
+                                    <label for="user" class="label">USUÁRIO</label>
+                                    <input type="text" id="usuario" name="usuario"
+                                        placeholder="Digite seu usuário..." />
+
+                                </div>
+                                <div class="group">
+                                    <label for="pass" class="label">SENHA</label>
+                                    <input type="password" id="senha" name="senha" placeholder="Digite sua senha ....">
+                                </div>
+                                <div class="group">
+                                    <button type="submit" id="botaoLogin" name="botaoLogin">Acessar</button>
+
+                                </div>
+                                <div class="hr"></div>
+
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
 
             </div>
 
@@ -41,12 +68,12 @@
 
             var usuario = document.getElementById("usuario").value;
             var senha = document.getElementById("senha").value;
-           
+
 
 
             formData.append("usuario", usuario);
             formData.append("senha", senha);
-            
+
 
             var xhr = new XMLHttpRequest();
 
@@ -100,7 +127,7 @@
 
     </script>
 
-   
+
 </body>
 
 </html>
