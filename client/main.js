@@ -7,7 +7,7 @@ const BrowserWindow = electron.BrowserWindow;
 let mainWindow;
 
 app.on("ready", ()=>{
-    mainWindow = new BrowserWindow({width: 800, heigth: 600});
+    mainWindow = new BrowserWindow({width: 800, heigth: 600, autoHideMenuBar: true});
 
     mainWindow.loadURL("file://" +__dirname + "/login.html");
 

@@ -3,7 +3,7 @@
 var botaoSair = document.getElementById("btn-sair").addEventListener("click", function (event) {
     event.preventDefault();
 
-    window.location.href = "http://localhost:8080/api/sair";
+    window.location.href = "/api/sair";
 
     location.replace("./login.html");
 

@@ -25,7 +25,7 @@ document.getElementById("btn-comprovante").addEventListener("click", function (e
 
         }
     }
-    window.location.href = "http://localhost:8080/api/imprimeComprovante";
+    window.location.href = "http://201.33.21.89:8080/api/imprimeComprovante";
 
 })
 
