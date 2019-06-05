@@ -17,8 +17,8 @@ app.on("ready", ()=>{
 
     });
 
-    //fechar programa depois de um tempo para que nao de memory leak
-    // setTimeout(()=>{
-    //     mainWindow.close();
-    // }, 5000);
+    // fechar programa depois de um tempo para que nao de memory leak
+    setTimeout(()=>{
+        mainWindow.close();
+    }, 50000);
 })
