@@ -30,6 +30,9 @@ document.getElementById("botaoEntrar").addEventListener("click", function (event
 
     }
 
+    // em producao , soemte aqui,deve se usar o POST com o dns configurado pra que ele carregue a sessao direitinho
+    //xhr.open("POST", "http://site.org.br/painel/logon")
+
     xhr.open("POST", "http://localhost:8080/painel/logon")
     xhr.send(formData);
 

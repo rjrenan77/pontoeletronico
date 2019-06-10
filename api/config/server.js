@@ -25,6 +25,16 @@ app.use(expressSession({
 
 app.use(multiparty());
 
+//código para permitir o cross domain quando configura o dns
+app.all('*', function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+  });
+  
+
+
 consign()
     .include("app/routes")
     .then("config/dbConnection.js")
